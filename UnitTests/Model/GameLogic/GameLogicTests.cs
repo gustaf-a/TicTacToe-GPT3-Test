@@ -5,6 +5,27 @@ namespace UnitTests.Model.GameLogic;
 
 public class GameLogicTests
 {
+    private readonly List<Player> _players;
+
+    public GameLogicTests()
+    {
+        _players = new()
+        {
+            new Player
+            {
+                IsHuman = true,
+                PlayerNumber = 1,
+                PlayerSymbol = "X"
+            },
+            new Player
+            {
+                IsHuman = true,
+                PlayerNumber = 2,
+                PlayerSymbol = "O"
+            }
+        };
+    }
+
     [Theory]
     [InlineData(0)]
     [InlineData(1)]
@@ -13,20 +34,19 @@ public class GameLogicTests
     {
         //Arrange
         var gameLogic = new TicTacToe.Model.GameLogic.GameLogic(3);
-        var player = 1;
         
-        var gameState = new GameState(3);
+        var gameState = new GameState(3, _players);
 
         for (int i = 0; i < 3; i++)
             gameState.ApplyMove(new Move
             {
                 Column = i,
                 Row = row,
-                Player = player
+                Player = gameState.GetCurrentPlayer().PlayerNumber
             });
 
         //Act
-        var result = gameLogic.PlayerHasWon(gameState, player);
+        var result = gameLogic.PlayerHasWon(gameState);
 
         //Assert
         Assert.True(result);
@@ -40,20 +60,19 @@ public class GameLogicTests
     {
         //Arrange
         var gameLogic = new TicTacToe.Model.GameLogic.GameLogic(3);
-        var player = 1;
-
-        var gameState = new GameState(3);
+        
+        var gameState = new GameState(3, _players);
 
         for (int i = 0; i < 3; i++)
             gameState.ApplyMove(new Move
             {
                 Column = column,
                 Row = i,
-                Player = player
+                Player = gameState.GetCurrentPlayer().PlayerNumber
             });
 
         //Act
-        var result = gameLogic.PlayerHasWon(gameState, player);
+        var result = gameLogic.PlayerHasWon(gameState);
 
         //Assert
         Assert.True(result);
@@ -64,20 +83,19 @@ public class GameLogicTests
     {
         //Arrange
         var gameLogic = new TicTacToe.Model.GameLogic.GameLogic(3);
-        var player = 1;
 
-        var gameState = new GameState(3);
+        var gameState = new GameState(3, _players);
 
         for (int i = 0; i < 3; i++)
             gameState.ApplyMove(new Move
             {
                 Column = i,
                 Row = i,
-                Player = player
+                Player = gameState.GetCurrentPlayer().PlayerNumber
             });
 
         //Act
-        var result = gameLogic.PlayerHasWon(gameState, player);
+        var result = gameLogic.PlayerHasWon(gameState);
 
         //Assert
         Assert.True(result);
@@ -88,20 +106,19 @@ public class GameLogicTests
     {
         //Arrange
         var gameLogic = new TicTacToe.Model.GameLogic.GameLogic(3);
-        var player = 1;
 
-        var gameState = new GameState(3);
+        var gameState = new GameState(3, _players);
 
         for (int i = 0; i < 3; i++)
             gameState.ApplyMove(new Move
             {
                 Column = i,
                 Row = 2-i,
-                Player = player
+                Player = gameState.GetCurrentPlayer().PlayerNumber
             });
 
         //Act
-        var result = gameLogic.PlayerHasWon(gameState, player);
+        var result = gameLogic.PlayerHasWon(gameState);
 
         //Assert
         Assert.True(result);
@@ -112,9 +129,10 @@ public class GameLogicTests
     {
         //Arrange
         var gameLogic = new TicTacToe.Model.GameLogic.GameLogic(3);
-        var player = 1;
 
-        var gameState = new GameState(3);
+        var gameState = new GameState(3, _players);
+
+        var player = gameState.GetCurrentPlayer().PlayerNumber;
 
         gameState.ApplyMove(new Move
         {
@@ -152,7 +170,7 @@ public class GameLogicTests
         });
 
         //Act
-        var result = gameLogic.PlayerHasWon(gameState, player);
+        var result = gameLogic.PlayerHasWon(gameState);
 
         //Assert
         Assert.False(result);

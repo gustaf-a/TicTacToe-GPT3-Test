@@ -4,5 +4,5 @@ namespace TicTacToe.Model.MoveMaker;
 
 public interface IMoveMaker
 {
-    public Move GetNextMove(int[,] board, int playerNumber);
+    public Move GetNextMove(GameState gameState);
 }

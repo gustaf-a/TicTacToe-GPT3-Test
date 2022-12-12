@@ -1,22 +1,35 @@
-﻿namespace TicTacToe.Model.Data;
+﻿using System;
+using System.Collections.Generic;
+
+namespace TicTacToe.Model.Data;
 
 public class GameState
 {
+    private const int NoMoveMadeNumber = 0;
+
     private readonly int[,] _board;
 
     private int _movesMade;
-    private int _maxMovesToMake;
+    private readonly int _maxMovesToMake;
 
     public int BoardSize { get; private set; }
 
-    public GameState(int boardSize)
-    {
-        BoardSize = boardSize;
+    private int _currentPlayer;
+    private List<Player> _players;
 
+    public GameState(int boardSize, List<Player> players)
+    {
+        if (boardSize < 2)
+            throw new Exception("Invalid board size");
+
+        BoardSize = boardSize;
         _board = new int[boardSize, boardSize];
 
         _movesMade = 0;
         _maxMovesToMake = BoardSize * BoardSize;
+
+        _players = players;
+        _currentPlayer = 0;
     }
 
     public void ApplyMove(Move move)
@@ -24,6 +37,34 @@ public class GameState
         _board[move.Row, move.Column] = move.Player;
 
         _movesMade++;
+    }
+
+    public void RemoveMove(Move move)
+    {
+        _board[move.Row, move.Column] = NoMoveMadeNumber;
+
+        _movesMade--;
+    }
+
+    public Player GetCurrentPlayer()
+    {
+        return _players[_currentPlayer];
+    }
+
+    public void NextPlayer()
+    {
+        _currentPlayer++;
+
+        if (_currentPlayer >= _players.Count)
+            _currentPlayer = 0;
+    }
+
+    public void PreviousPlayer()
+    {
+        _currentPlayer--;
+
+        if (_currentPlayer < 0)
+            _currentPlayer = _players.Count - 1;
     }
 
     public int[,] GetBoard()
@@ -36,7 +77,6 @@ public class GameState
 
     public override string ToString()
     {
-        // Return a string representation of the game board
         var boardString = "";
 
         for (int row = 0; row < BoardSize; row++)

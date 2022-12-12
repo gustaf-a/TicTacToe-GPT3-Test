@@ -20,9 +20,10 @@ public class GameLogic
         return true;
     }
 
-    public bool PlayerHasWon(GameState gameState, int player)
+    public bool PlayerHasWon(GameState gameState)
     {
         var boardSize = gameState.BoardSize;
+        var player = gameState.GetCurrentPlayer().PlayerNumber;
 
         //Check all rows
         for (int row = 0; row < boardSize; row++)

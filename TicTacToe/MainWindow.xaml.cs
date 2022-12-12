@@ -16,8 +16,6 @@ public partial class MainWindow : Window
     private readonly IMoveMaker _moveMaker;
     private readonly GameLogic _gameLogic;
 
-    private int _playersTurn;
-
     private bool _waitingForComputerMove = false;
     private bool _gameIsOver = false;
 
@@ -82,12 +80,10 @@ public partial class MainWindow : Window
 
     private void NewGame()
     {
-        _gameState = new GameState(BoardSize);
-
         if(_players is null)
             _players = _playerFactory.CreatePlayers(NumberOfPlayers);
 
-        _playersTurn = 0;
+        _gameState = new GameState(BoardSize, _players);
 
         _gameIsOver = false;
 
@@ -113,7 +109,7 @@ public partial class MainWindow : Window
             return;
         }
 
-        var currentPlayer = _players[_playersTurn];
+        var currentPlayer = _gameState.GetCurrentPlayer();
 
         if (!currentPlayer.IsHuman)
             return;
@@ -133,7 +129,7 @@ public partial class MainWindow : Window
 
         UpdateBoard(_gameState);
 
-        if (_gameLogic.PlayerHasWon(_gameState, move.Player))
+        if (_gameLogic.PlayerHasWon(_gameState))
         {
             _gameIsOver = true;
             MessageBox.Show($"Player {move.Player} has won!");
@@ -150,9 +146,9 @@ public partial class MainWindow : Window
             return;
         }
 
-        _playersTurn = NextPlayer(_playersTurn);
+        _gameState.NextPlayer();
 
-        if (!_players[_playersTurn].IsHuman)
+        if (!_gameState.GetCurrentPlayer().IsHuman)
             MakeComputerControlledMove();
     }
 
@@ -171,7 +167,7 @@ public partial class MainWindow : Window
     {
         _waitingForComputerMove = true;
 
-        var move = _moveMaker.GetNextMove(_gameState.GetBoard(), _players[_playersTurn].PlayerNumber);
+        var move = _moveMaker.GetNextMove(_gameState);
 
         MoveMade(move);
 
@@ -193,15 +189,5 @@ public partial class MainWindow : Window
                 else
                     button.Content = _players[board[i, j] - 1].PlayerSymbol;
             }
-    }
-
-    private int NextPlayer(int currentPlayer)
-    {
-        currentPlayer++;
-
-        if (currentPlayer >= _players.Count)
-            return 0;
-
-        return currentPlayer;
     }
 }
