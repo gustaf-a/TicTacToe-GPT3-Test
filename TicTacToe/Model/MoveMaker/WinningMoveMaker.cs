@@ -41,6 +41,9 @@ public class WinningMoveMaker : IMoveMaker
         if (BlockOpponentForkMoveFound(gameState, possibleMoves, out move))
             return move;
 
+        if (ForcingMoveFound(gameState, possibleMoves, out move))
+            return move;
+
         return _fallBackMoveMaker.GetNextMove(gameState);
     }
 
@@ -146,5 +149,33 @@ public class WinningMoveMaker : IMoveMaker
         gameState.PreviousPlayer();
 
         return result;
+    }
+
+    /// <summary>
+    /// Returns true and returns the move if a move can setup a situation where the next move can win the game
+    /// </summary>
+    private bool ForcingMoveFound(GameState gameState, List<Move> possibleMoves, out Move move)
+    {
+        move = new Move();
+
+        foreach (var possibleMove in possibleMoves)
+        {
+            gameState.ApplyMove(possibleMove);
+
+            var possibleFollowUpMoves = possibleMoves.Except(new List<Move> { possibleMove }).ToList();
+            if (!WinningMoveFound(gameState, possibleFollowUpMoves, out Move winningFollowUpMove))
+            {
+                gameState.RemoveMove(possibleMove);
+                continue;
+            }
+
+            gameState.RemoveMove(possibleMove);
+
+            move = possibleMove;
+
+            return true;
+        }
+
+        return false;
     }
 }
