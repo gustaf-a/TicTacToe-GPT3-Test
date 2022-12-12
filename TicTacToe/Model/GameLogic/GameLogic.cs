@@ -80,6 +80,9 @@ public class GameLogic
             else
                 winningMovesInARow = 0;
 
+            if (winningMovesInARow >= MovesInARowToWin)
+                return true;
+
             row += changeRows;
             column += changeColumns;
         }

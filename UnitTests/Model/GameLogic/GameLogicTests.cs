@@ -27,28 +27,33 @@ public class GameLogicTests
     }
 
     [Theory]
-    [InlineData(0)]
-    [InlineData(1)]
-    [InlineData(2)]
-    public void PlayerHasWon_ShouldReturnTrue_WhenPlayerHasWon_AcrossRows(int row)
+    [InlineData(3, 3)]
+    [InlineData(4, 3)]
+    [InlineData(5, 4)]
+    [InlineData(7, 5)]
+    [InlineData(9, 5)]
+    public void PlayerHasWon_ShouldReturnTrue_WhenDifferentBoardSizes_AcrossRows(int boardSize, int movesInRowToWin)
     {
         //Arrange
-        var gameLogic = new TicTacToe.Model.GameLogic.GameLogic(3);
-        
-        var gameState = new GameState(3, _players);
+        var gameLogic = new TicTacToe.Model.GameLogic.GameLogic(movesInRowToWin);
 
-        for (int i = 0; i < 3; i++)
-            gameState.ApplyMove(new Move
-            {
-                Column = i,
-                Row = row
-            });
+        var gameState = new GameState(boardSize, _players);
 
-        //Act
-        var result = gameLogic.PlayerHasWon(gameState);
+        for (int row = 0; row < boardSize; row++)
+        {
+            for (int i = 0; i < movesInRowToWin; i++)
+                gameState.ApplyMove(new Move
+                {
+                    Column = i,
+                    Row = row
+                });
 
-        //Assert
-        Assert.True(result);
+            //Act
+            var result = gameLogic.PlayerHasWon(gameState);
+
+            //Assert
+            Assert.True(result);
+        }
     }
 
     [Theory]
