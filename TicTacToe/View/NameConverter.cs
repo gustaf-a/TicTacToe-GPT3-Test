@@ -4,13 +4,12 @@ namespace TicTacToe.View;
 
 public static class NameConverter
 {
-    public static Move GetMove(string name, int currentPlayer)
+    public static Move GetMove(string name)
     {
         var splitName = name.Split("_");
 
         return new Move
         {
-            Player = currentPlayer,
             Row = int.Parse(splitName[1]),
             Column = int.Parse(splitName[2]),
         };

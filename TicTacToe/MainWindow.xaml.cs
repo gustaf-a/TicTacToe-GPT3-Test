@@ -37,7 +37,7 @@ public partial class MainWindow : Window
 
         _gameLogic = new GameLogic(3);
 
-        _moveMaker = new RandomMoveMaker();
+        _moveMaker = new WinningMoveMaker(_gameLogic, new RandomMoveMaker());
 
         NewGame();
     }
@@ -80,7 +80,7 @@ public partial class MainWindow : Window
 
     private void NewGame()
     {
-        if(_players is null)
+        if (_players is null)
             _players = _playerFactory.CreatePlayers(NumberOfPlayers);
 
         _gameState = new GameState(BoardSize, _players);
@@ -115,7 +115,7 @@ public partial class MainWindow : Window
             return;
 
         Button button = (Button)sender;
-        var move = NameConverter.GetMove(button.Name, currentPlayer.PlayerNumber);
+        var move = NameConverter.GetMove(button.Name);
 
         if (!GameLogic.MoveIsValid(_gameState, move))
             return;
@@ -129,12 +129,14 @@ public partial class MainWindow : Window
 
         UpdateBoard(_gameState);
 
+        var currentPlayer = _gameState.GetCurrentPlayer();
+
         if (_gameLogic.PlayerHasWon(_gameState))
         {
             _gameIsOver = true;
-            MessageBox.Show($"Player {move.Player} has won!");
+            MessageBox.Show($"Player {currentPlayer.PlayerNumber} has won!");
 
-            AddToPlayerScore(move.Player);
+            AddToPlayerScore(currentPlayer.PlayerNumber);
 
             return;
         }

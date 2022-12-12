@@ -25,7 +25,6 @@ public class RandomMoveMakerTests
                 PlayerSymbol = "O"
             }
         };
-
     }
 
     [Fact]
@@ -37,7 +36,7 @@ public class RandomMoveMakerTests
 
         for (int row = 0; row < boardSize; row++)
             for (int column = 0; column < boardSize; column++)
-                gameState.ApplyMove(new Move { Row = row, Column = column, Player = 1 });
+                gameState.ApplyMove(new Move { Row = row, Column = column });
 
         var moveMaker = new RandomMoveMaker();
 
@@ -57,9 +56,9 @@ public class RandomMoveMakerTests
 
         for (int row = 0; row < boardSize; row++)
             for (int column = 0; column < boardSize; column++)
-                gameState.ApplyMove(new Move { Row = row, Column = column, Player = 1 });
+                gameState.ApplyMove(new Move { Row = row, Column = column });
 
-        gameState.RemoveMove(new Move { Row = 2, Column = 2, Player = 1 });
+        gameState.RemoveMove(new Move { Row = 2, Column = 2 });
 
         var moveMaker = new RandomMoveMaker();
 
@@ -67,7 +66,6 @@ public class RandomMoveMakerTests
         var move = moveMaker.GetNextMove(gameState);
 
         //Assert
-        Assert.Equal(1, move.Player);
         Assert.Equal(2, move.Row);
         Assert.Equal(2, move.Column);
     }

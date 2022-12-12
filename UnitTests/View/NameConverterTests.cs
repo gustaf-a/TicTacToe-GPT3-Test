@@ -15,10 +15,9 @@ public class NameConverterTests
         var expectedColumn = 2;
 
         //Act
-        var move = NameConverter.GetMove(buttonName, 1);
+        var move = NameConverter.GetMove(buttonName);
 
         //Assert
-        Assert.Equal(1, move.Player);
         Assert.Equal(expectedRow, move.Row);
         Assert.Equal(expectedColumn, move.Column);
     }
@@ -31,7 +30,6 @@ public class NameConverterTests
 
         var move = new Move()
         {
-            Player = 1,
             Row = 2,
             Column = 3
         };

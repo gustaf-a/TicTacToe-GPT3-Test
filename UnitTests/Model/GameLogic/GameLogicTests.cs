@@ -41,8 +41,7 @@ public class GameLogicTests
             gameState.ApplyMove(new Move
             {
                 Column = i,
-                Row = row,
-                Player = gameState.GetCurrentPlayer().PlayerNumber
+                Row = row
             });
 
         //Act
@@ -67,8 +66,7 @@ public class GameLogicTests
             gameState.ApplyMove(new Move
             {
                 Column = column,
-                Row = i,
-                Player = gameState.GetCurrentPlayer().PlayerNumber
+                Row = i
             });
 
         //Act
@@ -90,8 +88,7 @@ public class GameLogicTests
             gameState.ApplyMove(new Move
             {
                 Column = i,
-                Row = i,
-                Player = gameState.GetCurrentPlayer().PlayerNumber
+                Row = i
             });
 
         //Act
@@ -113,8 +110,7 @@ public class GameLogicTests
             gameState.ApplyMove(new Move
             {
                 Column = i,
-                Row = 2-i,
-                Player = gameState.GetCurrentPlayer().PlayerNumber
+                Row = 2-i
             });
 
         //Act
@@ -132,41 +128,34 @@ public class GameLogicTests
 
         var gameState = new GameState(3, _players);
 
-        var player = gameState.GetCurrentPlayer().PlayerNumber;
-
         gameState.ApplyMove(new Move
         {
             Column = 0,
-            Row = 0,
-            Player = player
+            Row = 0
         });
 
         gameState.ApplyMove(new Move
         {
             Column = 0,
-            Row = 1,
-            Player = player
+            Row = 1
         });
 
         gameState.ApplyMove(new Move
         {
             Column = 1,
-            Row = 1,
-            Player = player
+            Row = 1
         });
 
         gameState.ApplyMove(new Move
         {
             Column = 2,
-            Row = 0,
-            Player = player
+            Row = 0
         });
 
         gameState.ApplyMove(new Move
         {
             Column = 1,
-            Row = 2,
-            Player = player
+            Row = 2
         });
 
         //Act

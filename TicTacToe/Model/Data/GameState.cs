@@ -34,7 +34,7 @@ public class GameState
 
     public void ApplyMove(Move move)
     {
-        _board[move.Row, move.Column] = move.Player;
+        _board[move.Row, move.Column] = GetCurrentPlayer().PlayerNumber;
 
         _movesMade++;
     }
