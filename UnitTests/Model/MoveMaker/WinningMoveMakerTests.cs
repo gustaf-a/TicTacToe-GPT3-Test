@@ -146,7 +146,61 @@ public class WinningMoveMakerTests
         Assert.Equal(2, move.Column);
     }
 
-    //ForkMove
+    [Fact]
+    public void GetNextMove_ShouldReturnForkMove_WhenPossible()
+    {
+        //Arrange
+        var boardSize = 5;
+        var gameState = new GameState(boardSize, _players);
 
-    //BlockForkMove
+        gameState.ApplyMove(new Move { Row = 1, Column = 1 });
+        gameState.ApplyMove(new Move { Row = 1, Column = 2 });
+
+        gameState.NextPlayer();
+
+        gameState.ApplyMove(new Move { Row = 4, Column = 1 });
+        gameState.ApplyMove(new Move { Row = 4, Column = 2 });
+
+        gameState.NextPlayer();
+
+        var gameLogic = new TicTacToe.Model.GameLogic.GameLogic(4);
+        var fallbackMoveMaker = new RandomMoveMaker();
+        var moveMaker = new WinningMoveMaker(gameLogic, fallbackMoveMaker);
+
+        //Act
+        var move = moveMaker.GetNextMove(gameState);
+
+        //Assert
+        Assert.Equal(1, move.Row);
+        Assert.Equal(3, move.Column);
+    }
+
+    [Fact]
+    public void GetNextMove_ShouldReturnBlockingForkMove_WhenPossible()
+    {
+        //Arrange
+        var boardSize = 5;
+        var gameState = new GameState(boardSize, _players);
+
+        gameState.ApplyMove(new Move { Row = 1, Column = 1 });
+        gameState.ApplyMove(new Move { Row = 3, Column = 2 });
+
+        gameState.NextPlayer();
+
+        gameState.ApplyMove(new Move { Row = 4, Column = 1 });
+        gameState.ApplyMove(new Move { Row = 4, Column = 2 });
+
+        gameState.NextPlayer();
+
+        var gameLogic = new TicTacToe.Model.GameLogic.GameLogic(4);
+        var fallbackMoveMaker = new RandomMoveMaker();
+        var moveMaker = new WinningMoveMaker(gameLogic, fallbackMoveMaker);
+
+        //Act
+        var move = moveMaker.GetNextMove(gameState);
+
+        //Assert
+        Assert.Equal(4, move.Row);
+        Assert.Equal(3, move.Column);
+    }
 }
