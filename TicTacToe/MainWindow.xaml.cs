@@ -56,6 +56,11 @@ public partial class MainWindow : Window
 
         grdMain.Children.Add(spBoard);
 
+        // Set the Height and Width properties of the window
+        // based on the boardSize parameter
+        this.Height = 100 + (boardSize * 50);
+        this.Width = 100 + (boardSize * 50);
+
         _boardButtons = new Button[boardSize, boardSize];
 
         for (int row = 0; row < boardSize; row++)
