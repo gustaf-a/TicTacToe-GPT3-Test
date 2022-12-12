@@ -1,0 +1,18 @@
+# Changelog / GPT3-log
+
+## 2022-12-10
+Asked ChatGPT:
+"I have a tic tac toe game written with C# for WPF. I want to be able to increase the grid and window size dynamically. Can you write the XAML for this game? I want it to be with nice colors and to have a frame around the playing board. I want the player to be able to adjust the size of the board and I want a score board showing victories for the two different players. Thank you"
+
+Code code not working fully. 
+"The current InitializeBoard method can't find spBoard. Can you update this method to fix this?"
+
+"There's a bug here: 
+grid.Children.Add(spBoard); 
+
+The grid isn't defined in the context. How should I fix this?"
+
+Fixed manually:
+- Change classname in xaml
+- Add name for main Grid
+- Add button naming when creating buttons
