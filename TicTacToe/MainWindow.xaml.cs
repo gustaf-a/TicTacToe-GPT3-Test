@@ -19,7 +19,8 @@ public partial class MainWindow : Window
     private bool _waitingForComputerMove = false;
     private bool _gameIsOver = false;
 
-    private const int BoardSize = 3;
+    private const int BoardSize = 7;
+    private const int InARowToWin = 4;
     private const int NumberOfPlayers = 2;
 
     private GameState _gameState;
@@ -35,7 +36,7 @@ public partial class MainWindow : Window
 
         _playerFactory = new PlayerFactory();
 
-        _gameLogic = new GameLogic(3);
+        _gameLogic = new GameLogic(InARowToWin);
 
         _moveMaker = new WinningMoveMaker(_gameLogic, new RandomMoveMaker());
 
